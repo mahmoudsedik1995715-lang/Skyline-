@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skyline Real Estate</title>
+<meta name="theme-color" content="#16243B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Skyline Real Estate">
+<meta name="application-name" content="Skyline Real Estate">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316243B'/%3E%3Cpath d='M12 52V30h10v22zM25 52V16h14v36zM42 52V26h10v26z' fill='%230E7C7B'/%3E%3Cpath d='M29 22h6M29 30h6M29 38h6' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+:root{--ink:#16243B;--paper:#F2F4F6;--card:#fff;--line:#DDE2E8;--teal:#0E7C7B;--teal-d:#0A5E5D;--amber:#C98300;--red:#B83A2E;--green:#2E7D4F;--mute:#5E6B7C}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cairo','Tajawal','Segoe UI',Tahoma,sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;padding-bottom:84px}
+button,input,select,textarea{font:inherit;color:inherit}
+header{background:var(--ink);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;font-weight:700}
+header button{background:transparent;border:1px solid #ffffff55;color:#fff;border-radius:8px;padding:6px 12px;cursor:pointer}
+main{padding:14px;max-width:720px;margin:0 auto}
+nav{position:fixed;bottom:0;right:0;left:0;background:#fff;border-top:1px solid var(--line);display:flex;z-index:5}
+nav button{flex:1;border:0;background:none;padding:12px 4px;font-size:14px;color:var(--mute);cursor:pointer;border-top:3px solid transparent}
+nav button.on{color:var(--teal-d);font-weight:700;border-top-color:var(--teal)}
+h2{font-size:17px;margin:18px 0 10px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:24px;color:var(--teal-d)}
+.stat span{font-size:12.5px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-right:5px solid var(--teal);border-radius:10px;padding:12px;margin-bottom:10px}
+.card.st-حجز,.card.st-محجوز{border-right-color:var(--amber)}
+.card.st-اتباع{border-right-color:#9aa4b2;opacity:.75}
+.card.late{border-right-color:var(--red)}
+.card h3{font-size:16px;margin-bottom:2px}
+.meta{display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--mute);font-size:13.5px}
+.price{font-weight:700;color:var(--teal-d);margin-top:4px}
+.row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:14px;text-decoration:none;color:var(--ink);display:inline-block;min-height:38px}
+.btn.p{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn.d{color:var(--red)}
+.btn.w{background:#1f9d55;border-color:#1f9d55;color:#fff}
+.chip{display:inline-block;font-size:12.5px;padding:1px 9px;border-radius:20px;background:#E6EEF0;color:var(--teal-d);margin-inline-start:6px}
+.chip.r{background:#F7E3E0;color:var(--red)}
+.chip.a{background:#FBEFD2;color:#8a5a00}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.filters input{grid-column:1/3}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff}
+textarea{min-height:90px;resize:vertical}
+label{font-size:13px;color:var(--mute);display:block;margin-bottom:2px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid .f{grid-column:span 2}.grid .h{grid-column:span 1}
+#modal{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;justify-content:center;z-index:20}
+#modal.on{display:flex}
+.sheet{background:#fff;width:100%;max-width:720px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px}
+.sheet h3{margin-bottom:12px}
+.empty{background:#fff;border:1px dashed #b9c2cd;border-radius:10px;padding:18px;text-align:center;color:var(--mute)}
+.seg{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 14px;cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.add{width:100%;margin-bottom:12px;min-height:44px}
+#toast{position:fixed;bottom:92px;right:50%;transform:translateX(50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:20px;display:none;z-index:30}
+.plan{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px}
+.plan .day{min-width:64px;font-weight:700;color:var(--teal-d)}
+.plan .t{flex:1;font-size:14px}
+small.hint{color:var(--mute);font-size:12.5px;display:block;margin-top:4px}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(30px);opacity:.5}to{transform:none;opacity:1}}}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #0E7C7B88;outline-offset:1px}
+</style>
+</head>
+<body>
+<header><h1 id="ttl" dir="auto">Skyline Real Estate</h1><button onclick="openSettings()">الإعدادات</button></header>
+<main id="main"></main>
+<nav id="nav"></nav>
+<div id="modal" onclick="if(event.target===this)closeM()"></div>
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>new Date().toISOString().slice(0,10);
+const addDays=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.toISOString().slice(0,10)};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const num=n=>Number(n).toLocaleString('en-US');
+
+let S={props:[],clients:[],settings:{name:'',phone:''}};
+let tab='home', F={q:'',type:'',purpose:'',status:''}, CF={q:'',stage:''};
+
+const TYPES=['شقة','محل','فيلا','أرض','مكتب'];
+const FINISH=['على الطوب','نصف تشطيب','تشطيب كامل','سوبر لوكس','ألترا سوبر لوكس'];
+const PSTAT=['متاح','محجوز','اتباع'];
+const STAGES=['جديد','تم التواصل','معاينة','تفاوض','اتقفل','ضايع'];
+const DONE=['اتقفل','ضايع'];
+
+async function load(){
+  try{if(window.storage){const r=await window.storage.get('re-office');if(r&&r.value){S=Object.assign(S,JSON.parse(r.value));return}}}catch(e){}
+  try{const v=localStorage.getItem('skyline-re');if(v)S=Object.assign(S,JSON.parse(v))}catch(e){}
+}
+async function save(){
+  const j=JSON.stringify(S);
+  try{if(window.storage)await window.storage.set('re-office',j)}catch(e){}
+  try{localStorage.setItem('skyline-re',j)}catch(e){}
+}
+
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.x);toast.x=setTimeout(()=>t.style.display='none',1800)}
+function modal(h){$('#modal').innerHTML='<div class="sheet">'+h+'</div>';$('#modal').classList.add('on')}
+function closeM(){$('#modal').classList.remove('on');$('#modal').innerHTML=''}
+function confirmBox(msg,fn){window._cf=fn;modal(`<h3>${esc(msg)}</h3><div class="row"><button class="btn d" onclick="closeM();_cf()">أيوه، احذف</button><button class="btn" onclick="closeM()">إلغاء</button></div>`)}
+function copyText(id){const t=$('#'+id);t.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}if(!ok&&navigator.clipboard)navigator.clipboard.writeText(t.value);toast('تم النسخ')}
+
+const waNum=p=>{let n=String(p||'').replace(/\D/g,'');if(n.startsWith('00'))n=n.slice(2);if(n.startsWith('0'))n='2'+n;return n};
+const waLink=(p,m)=>'https://wa.me/'+waNum(p)+'?text='+encodeURIComponent(m||'');
+
+/* ---------- form helper ---------- */
+function formHTML(spec,o){return '<div class="grid">'+spec.map(x=>{
+  const v=o[x.k]??'';let inp;
+  if(x.t==='sel')inp=`<select id="f_${x.k}">${x.o.map(a=>`<option ${a===v?'selected':''}>${esc(a)}</option>`).join('')}</select>`;
+  else if(x.t==='ta')inp=`<textarea id="f_${x.k}" placeholder="${esc(x.ph||'')}">${esc(v)}</textarea>`;
+  else inp=`<input id="f_${x.k}" type="${x.t||'text'}" value="${esc(v)}" placeholder="${esc(x.ph||'')}" ${x.t==='number'?'inputmode="numeric"':''}>`;
+  return `<div class="${x.h?'h':'f'}" id="w_${x.k}"><label for="f_${x.k}">${x.l}</label>${inp}</div>`}).join('')+'</div>'}
+const collect=spec=>{const o={};spec.forEach(x=>o[x.k]=$('#f_'+x.k).value.trim());return o};
+
+/* ---------- properties ---------- */
+const PSPEC=[
+ {k:'type',l:'النوع',t:'sel',o:TYPES,h:1},{k:'purpose',l:'الغرض',t:'sel',o:['بيع','إيجار'],h:1},
+ {k:'area',l:'المنطقة',ph:'مثال: مدينة نصر',h:1},{k:'address',l:'العنوان / الشارع',h:1},
+ {k:'size',l:'المساحة (م²)',t:'number',h:1},{k:'floor',l:'الدور / الأسانسير',ph:'الثالث - أسانسير',h:1},
+ {k:'rooms',l:'عدد الغرف',t:'number',h:1},{k:'baths',l:'عدد الحمامات',t:'number',h:1},
+ {k:'finishing',l:'التشطيب',t:'sel',o:FINISH,h:1},{k:'status',l:'الحالة',t:'sel',o:PSTAT,h:1},
+ {k:'price',l:'السعر (جنيه)',t:'number',h:1},{k:'payment',l:'طريقة الدفع',t:'sel',o:['كاش','تقسيط','كاش أو تقسيط'],h:1},
+ {k:'front',l:'واجهة المحل (متر)',t:'number',h:1},{k:'activity',l:'مناسب لنشاط',ph:'صيدلية، سوبر ماركت',h:1},
+ {k:'features',l:'المميزات (افصل بينها بفاصلة)',t:'ta',ph:'ناصية، قريب من المترو، تطل على حديقة'},
+ {k:'papers',l:'حالة الأوراق',ph:'عقد مسجل / قرار تخصيص'},
+ {k:'owner',l:'اسم ورقم المالك (خاص بيك، مش بيظهر في الإعلان)'}
+];
+function propTitle(p){return `${p.type} لل${p.purpose}`+(p.area?` في ${p.area}`:'')}
+function openProp(id){
+  const p=id?S.props.find(x=>x.id===id):{type:'شقة',purpose:'بيع',status:'متاح',payment:'كاش',finishing:'تشطيب كامل'};
+  modal(`<h3>${id?'تعديل العقار':'إضافة عقار'}</h3>${formHTML(PSPEC,p)}<div class="row"><button class="btn p" onclick="saveProp('${id||''}')">حفظ العقار</button><button class="btn" onclick="closeM()">إلغاء</button></div>`);
+  const t=$('#f_type');const tg=()=>{const s=t.value==='محل';$('#w_front').style.display=s?'':'none';$('#w_activity').style.display=s?'':'none'};
+  t.onchange=tg;tg();
+}
+function saveProp(id){
+  const o=collect(PSPEC);
+  if(!o.area){toast('اكتب المنطقة الأول');return}
+  if(id){Object.assign(S.props.find(x=>x.id===id),o)}else{o.id=uid();o.added=today();S.props.unshift(o)}
+  save();closeM();render();toast('تم حفظ العقار');
+}
+function delProp(id){confirmBox('تحذف العقار ده؟',()=>{S.props=S.props.filter(x=>x.id!==id);save();render()})}
+function matchesFor(c){return S.props.filter(p=>match(c,p))}
+function match(c,p){
+  if(p.status!=='متاح')return false;
+  if(c.purpose&&p.purpose!==c.purpose)return false;
+  if(c.type&&c.type!=='أي نوع'&&p.type!==c.type)return false;
+  if(c.area){const a=c.area.trim(),b=(p.area||'')+' '+(p.address||'');if(!b.includes(a)&&!(p.area&&a.includes(p.area)))return false}
+  const pr=Number(p.price)||0;
+  if(pr){if(c.max&&pr>Number(c.max)*1.1)return false;if(c.min&&pr<Number(c.min))return false}
+  return true;
+}
+function clientsFor(p){return S.clients.filter(c=>!DONE.includes(c.stage)&&match(c,p))}
+
+function propCard(p){
+  const n=clientsFor(p).length;
+  return `<div class="card st-${p.status}">
+   <h3>${esc(propTitle(p))}<span class="chip ${p.status==='متاح'?'':'a'}">${esc(p.status)}</span></h3>
+   <div class="meta">${p.size?`<span>${esc(p.size)} م²</span>`:''}${p.floor?`<span>الدور: ${esc(p.floor)}</span>`:''}${p.rooms?`<span>${esc(p.rooms)} غرف</span>`:''}${p.finishing?`<span>${esc(p.finishing)}</span>`:''}</div>
+   <div class="price">${esc(money(p))}</div>
+   <div class="row">
+    <button class="btn p" onclick="openAd('${p.id}')">إعلان</button>
+    ${n?`<button class="btn" onclick="propMatches('${p.id}')">${n} عميل مناسب</button>`:''}
+    <button class="btn" onclick="openProp('${p.id}')">تعديل</button>
+    <button class="btn d" onclick="delProp('${p.id}')">حذف</button>
+   </div></div>`;
+}
+function filteredProps(){
+  return S.props.filter(p=>(!F.type||p.type===F.type)&&(!F.purpose||p.purpose===F.purpose)&&(!F.status||p.status===F.status)&&
+   (!F.q||(p.area+' '+p.address+' '+p.features+' '+p.owner).includes(F.q)));
+}
+function updPropList(){const l=filteredProps();$('#plist').innerHTML=l.length?l.map(propCard).join(''):'<div class="empty">مفيش عقارات بالشكل ده.</div>'}
+function renderProps(){
+  $('#main').innerHTML=`<button class="btn p add" onclick="openProp()">+ إضافة عقار</button>
+  <div class="filters">
+   <input id="q" placeholder="دوّر بالمنطقة أو الشارع أو المالك" value="${esc(F.q)}">
+   <select id="ft"><option value="">كل الأنواع</option>${TYPES.map(t=>`<option ${F.type===t?'selected':''}>${t}</option>`).join('')}</select>
+   <select id="fp"><option value="">بيع وإيجار</option>${['بيع','إيجار'].map(t=>`<option ${F.purpose===t?'selected':''}>${t}</option>`).join('')}</select>
+   <select id="fs" style="grid-column:1/3"><option value="">كل الحالات</option>${PSTAT.map(t=>`<option ${F.status===t?'selected':''}>${t}</option>`).join('')}</select>
+  </div><div id="plist"></div>`;
+  $('#q').oninput=e=>{F.q=e.target.value;updPropList()};
+  $('#ft').onchange=e=>{F.type=e.target.value;updPropList()};
+  $('#fp').onchange=e=>{F.purpose=e.target.value;updPropList()};
+  $('#fs').onchange=e=>{F.status=e.target.value;updPropList()};
+  updPropList();
+}
+function propMatches(id){
+  const p=S.props.find(x=>x.id===id);const l=clientsFor(p);
+  modal(`<h3>عملاء مناسبين لـ ${esc(propTitle(p))}</h3>${l.map(c=>`<div class="card"><h3>${esc(c.name)}</h3><div class="meta"><span>${esc(wants(c))}</span></div>
+   <div class="row"><button class="btn w" onclick="sendProp('${c.id}','${p.id}')">ابعت له العقار</button></div></div>`).join('')}<button class="btn" onclick="closeM()">إغلاق</button>`);
+}
+
+/* ---------- ads ---------- */
+function money(p){if(!p.price)return 'السعر عند التواصل';return num(p.price)+' جنيه'+(p.purpose==='إيجار'?' / شهريًا':'')+(p.payment?` (${p.payment})`:'')}
+function feats(p){return (p.features||'').split(/[\n،,]+/).map(s=>s.trim()).filter(Boolean)}
+function contact(){return S.settings.phone||'(اكتب رقمك من الإعدادات)'}
+function adText(p,f){
+  const sp=p.type==='محل';
+  if(f==='wa')return `السلام عليكم 👋\nمتاح ${p.type} لل${p.purpose} في ${p.area}${p.size?`، ${p.size} م²`:''}${p.price?`، بسعر ${num(p.price)} جنيه${p.purpose==='إيجار'?' شهريًا':''}`:''}.\nتحب أبعتلك الصور وأحدد معاد معاينة؟`;
+  let L=[];
+  if(sp){
+    L.push(`🏪 محل لل${p.purpose} في ${p.area}${p.address?' - '+p.address:''}`,'');
+    L.push(`📐 المساحة: ${p.size||'-'} م²${p.front?` | واجهة: ${p.front} متر`:''}`);
+    if(p.activity)L.push(`🎯 مناسب لـ: ${p.activity}`);
+    if(p.finishing)L.push(`✨ التشطيب: ${p.finishing}`);
+  }else{
+    L.push(`🏠 ${p.type} لل${p.purpose} في ${p.area}${p.address?' - '+p.address:''}`,'');
+    if(p.size)L.push(`📐 المساحة: ${p.size} م²`);
+    if(p.floor)L.push(`🏢 الدور: ${p.floor}`);
+    if(p.rooms||p.baths)L.push(`🛏 ${p.rooms||'-'} غرف | 🚿 ${p.baths||'-'} حمام`);
+    if(p.finishing)L.push(`✨ التشطيب: ${p.finishing}`);
+  }
+  const fs=feats(p);
+  if(fs.length){L.push('','🌟 المميزات:');fs.forEach(x=>L.push('• '+x))}
+  L.push('','💰 السعر: '+money(p));
+  if(p.papers)L.push('📄 الأوراق: '+p.papers);
+  L.push('',`📞 للتواصل والمعاينة: ${contact()}${S.settings.name?' - '+S.settings.name:''}`);
+  if(f==='fb')L.push('',`#عقارات #${p.type}_لل${p.purpose} #${p.area.replace(/\s+/g,'_')}`);
+  return L.join('\n');
+}
+function openAd(id,f){
+  f=f||'long';const p=S.props.find(x=>x.id===id);
+  modal(`<h3>إعلان: ${esc(propTitle(p))}</h3>
+   <div class="seg">${[['long','تفصيلي'],['fb','فيسبوك'],['wa','واتساب قصير']].map(([k,l])=>`<button class="${k===f?'on':''}" onclick="openAd('${id}','${k}')">${l}</button>`).join('')}</div>
+   <textarea id="adt" style="min-height:260px">${esc(adText(p,f))}</textarea>
+   <small class="hint">تقدر تعدّل النص قبل النسخ.</small>
+   <div class="row"><button class="btn p" onclick="copyText('adt')">نسخ</button>
+   <a class="btn w" target="_blank" rel="noopener" href="#" onclick="this.href='https://wa.me/?text='+encodeURIComponent($('#adt').value)">إرسال واتساب</a>
+   <button class="btn" onclick="markAd('${id}')">سجّلت النشر</button></div>
+   ${S.settings.phone?'':'<small class="hint">ضيف رقمك من الإعدادات عشان يظهر في كل الإعلانات.</small>'}`);
+}
+function markAd(id){S.props.find(x=>x.id===id).lastAd=today();save();toast('اتسجّل النشر النهاردة');render()}
+
+/* ---------- clients ---------- */
+const CSPEC=[
+ {k:'name',l:'اسم العميل',h:0},{k:'phone',l:'رقم الموبايل',t:'tel',h:1},{k:'purpose',l:'عايز',t:'sel',o:['بيع','إيجار'],h:1},
+ {k:'type',l:'نوع العقار',t:'sel',o:['أي نوع',...TYPES],h:1},{k:'area',l:'المنطقة المطلوبة',h:1},
+ {k:'min',l:'أقل ميزانية',t:'number',h:1},{k:'max',l:'أقصى ميزانية',t:'number',h:1},
+ {k:'stage',l:'مرحلة العميل',t:'sel',o:STAGES,h:1},{k:'followUp',l:'ميعاد المتابعة',t:'date',h:1},
+ {k:'notes',l:'ملاحظات',t:'ta'}
+];
+const wants=c=>`${c.type&&c.type!=='أي نوع'?c.type:'عقار'} لل${c.purpose}${c.area?' في '+c.area:''}${c.max?' - لحد '+num(c.max):''}`;
+function openClient(id){
+  const c=id?S.clients.find(x=>x.id===id):{purpose:'بيع',type:'أي نوع',stage:'جديد',followUp:addDays(today(),1)};
+  modal(`<h3>${id?'تعديل العميل':'إضافة عميل'}</h3>${formHTML(CSPEC,c)}<div class="row"><button class="btn p" onclick="saveClient('${id||''}')">حفظ العميل</button><button class="btn" onclick="closeM()">إلغاء</button></div>`);
+}
+function saveClient(id){
+  const o=collect(CSPEC);if(!o.name){toast('اكتب اسم العميل');return}
+  if(id){Object.assign(S.clients.find(x=>x.id===id),o)}else{o.id=uid();o.added=today();S.clients.unshift(o)}
+  save();closeM();render();toast('تم حفظ العميل');
+}
+function delClient(id){confirmBox('تحذف العميل ده؟',()=>{S.clients=S.clients.filter(x=>x.id!==id);save();render()})}
+function setStage(id,v){S.clients.find(x=>x.id===id).stage=v;save();render()}
+function snooze(id,n){S.clients.find(x=>x.id===id).followUp=addDays(today(),n);save();closeM();render();toast('المتابعة بعد '+n+' يوم')}
+const isDue=c=>c.followUp&&c.followUp<=today()&&!DONE.includes(c.stage);
+function clientCard(c,compact){
+  const m=matchesFor(c).length;
+  return `<div class="card ${isDue(c)?'late':''}">
+   <h3>${esc(c.name)}<span class="chip">${esc(c.stage)}</span>${isDue(c)?'<span class="chip r">متابعة النهاردة</span>':''}</h3>
+   <div class="meta"><span>${esc(wants(c))}</span>${c.followUp&&!compact?`<span>المتابعة: ${esc(c.followUp)}</span>`:''}</div>
+   ${c.notes&&!compact?`<div class="meta" style="margin-top:4px">${esc(c.notes)}</div>`:''}
+   <div class="row">
+    ${c.phone?`<a class="btn" href="tel:${esc(c.phone)}">اتصال</a><button class="btn w" onclick="msgClient('${c.id}')">رسالة واتساب</button>`:''}
+    ${m?`<button class="btn" onclick="clientMatches('${c.id}')">${m} عقار مناسب</button>`:''}
+    ${compact?`<button class="btn" onclick="snooze('${c.id}',3)">بعد ٣ أيام</button>`:`<select style="width:auto" onchange="setStage('${c.id}',this.value)">${STAGES.map(s=>`<option ${s===c.stage?'selected':''}>${s}</option>`).join('')}</select>
+    <button class="btn" onclick="openClient('${c.id}')">تعديل</button><button class="btn d" onclick="delClient('${c.id}')">حذف</button>`}
+   </div></div>`;
+}
+function updClientList(){
+  const l=S.clients.filter(c=>(!CF.stage||c.stage===CF.stage)&&(!CF.q||(c.name+' '+c.phone+' '+c.area).includes(CF.q)));
+  $('#clist').innerHTML=l.length?l.map(c=>clientCard(c)).join(''):'<div class="empty">مفيش عملاء بالشكل ده.</div>';
+}
+function renderClients(){
+  $('#main').innerHTML=`<button class="btn p add" onclick="openClient()">+ إضافة عميل</button>
+  <div class="filters"><input id="cq" placeholder="دوّر بالاسم أو الرقم أو المنطقة" value="${esc(CF.q)}">
+  <select id="cs" style="grid-column:1/3"><option value="">كل المراحل</option>${STAGES.map(s=>`<option ${CF.stage===s?'selected':''}>${s}</option>`).join('')}</select></div><div id="clist"></div>`;
+  $('#cq').oninput=e=>{CF.q=e.target.value;updClientList()};
+  $('#cs').onchange=e=>{CF.stage=e.target.value;updClientList()};
+  updClientList();
+}
+function clientMatches(id){
+  const c=S.clients.find(x=>x.id===id);const l=matchesFor(c);
+  modal(`<h3>عقارات مناسبة لـ ${esc(c.name)}</h3>${l.map(p=>`<div class="card"><h3>${esc(propTitle(p))}</h3><div class="price">${esc(money(p))}</div>
+   <div class="row"><button class="btn w" onclick="sendProp('${c.id}','${p.id}')">ابعتهوله</button></div></div>`).join('')}<button class="btn" onclick="closeM()">إغلاق</button>`);
+}
+function msgText(c,k,p){
+  const nm=c.name.split(' ')[0];
+  if(k==='prop'&&p)return `أهلاً أستاذ ${nm} 👋\nلقيتلك عقار مناسب لطلبك:\n\n${adText(p,'wa').replace(/^السلام عليكم 👋\n/,'')}`;
+  if(k==='visit')return `أهلاً أستاذ ${nm}،\nإزاي حضرتك شايف العقار بعد المعاينة؟ لو عندك أي استفسار أو حابب نتفاوض على السعر أنا موجود.`;
+  return `أهلاً أستاذ ${nm}،\nبتابع مع حضرتك بخصوص طلبك (${wants(c)}). لسه مهتم؟ عندي خيارات جديدة أقدر أعرضها عليك.`;
+}
+function msgClient(id,k,pid){
+  const c=S.clients.find(x=>x.id===id);const p=pid?S.props.find(x=>x.id===pid):matchesFor(c)[0];
+  k=k||'follow';
+  modal(`<h3>رسالة لـ ${esc(c.name)}</h3>
+   <div class="seg">${[['follow','متابعة'],['visit','بعد المعاينة'],['prop','عرض عقار']].map(([a,l])=>`<button class="${a===k?'on':''}" onclick="msgClient('${id}','${a}','${p?p.id:''}')">${l}</button>`).join('')}</div>
+   <textarea id="mt" style="min-height:170px">${esc(msgText(c,k,p))}</textarea>
+   ${k==='prop'&&!p?'<small class="hint">مفيش عقار مناسب متاح للعميل ده دلوقتي.</small>':''}
+   <div class="row"><button class="btn p" onclick="copyText('mt')">نسخ</button>
+   <a class="btn w" target="_blank" rel="noopener" href="#" onclick="this.href=waLink(S.clients.find(x=>x.id==='${id}').phone,$('#mt').value)">إرسال واتساب</a>
+   <button class="btn" onclick="snooze('${id}',3)">تأجيل المتابعة ٣ أيام</button></div>`);
+}
+function sendProp(cid,pid){msgClient(cid,'prop',pid)}
+
+/* ---------- marketing ---------- */
+function weekPlan(){
+  const av=S.props.filter(p=>p.status==='متاح').sort((a,b)=>(a.lastAd||'').localeCompare(b.lastAd||''));
+  const out=[];for(let i=0;i<7&&i<av.length;i++)out.push({d:addDays(today(),i),p:av[i]});return out;
+}
+function renderMarketing(){
+  const av=S.props.filter(p=>p.status==='متاح');
+  const plan=weekPlan();
+  $('#main').innerHTML=`<h2 style="margin-top:0">خطة النشر الأسبوعية</h2>
+   <small class="hint" style="margin-bottom:8px">بترتب العقارات اللي بقالها أطول وقت من غير إعلان، عقار لكل يوم.</small>
+   ${plan.length?plan.map(x=>`<div class="plan"><div class="day">${new Date(x.d+'T12:00:00').toLocaleDateString('ar-EG',{weekday:'long'})}</div><div class="t">${esc(propTitle(x.p))}<br><span style="color:var(--mute);font-size:12.5px">${x.p.lastAd?'آخر نشر: '+x.p.lastAd:'لسه ما اتنشرش'}</span></div><button class="btn p" onclick="openAd('${x.p.id}')">إعلان</button></div>`).join(''):'<div class="empty">ضيف عقارات متاحة وهتظهر هنا الخطة.</div>'}
+   <h2>كل العقارات المتاحة</h2>
+   ${av.length?av.map(p=>`<div class="card"><h3>${esc(propTitle(p))}</h3><div class="price">${esc(money(p))}</div><div class="row"><button class="btn p" onclick="openAd('${p.id}','long')">تفصيلي</button><button class="btn" onclick="openAd('${p.id}','fb')">فيسبوك</button><button class="btn" onclick="openAd('${p.id}','wa')">واتساب</button></div></div>`).join(''):''}`;
+}
+
+/* ---------- home ---------- */
+function renderHome(){
+  const due=S.clients.filter(isDue);
+  const avail=S.props.filter(p=>p.status==='متاح');
+  const stale=avail.filter(p=>!p.lastAd||p.lastAd<addDays(today(),-7));
+  const act=S.clients.filter(c=>!DONE.includes(c.stage)).length;
+  let h=`<div class="stats"><div class="stat"><b>${avail.length}</b><span>عقار متاح</span></div><div class="stat"><b>${act}</b><span>عميل شغال</span></div><div class="stat"><b>${due.length}</b><span>متابعة النهاردة</span></div></div>`;
+  h+='<h2>متابعات النهاردة</h2>';
+  h+=due.length?due.map(c=>clientCard(c,true)).join(''):`<div class="empty">${S.clients.length?'مفيش متابعات مستحقة النهاردة.':'ضيف أول عميل وهتظهرلك متابعاته هنا.'}</div>`;
+  if(stale.length)h+=`<h2>محتاجة إعلان</h2><div class="card"><div>${stale.length} عقار متاح لسه ما اتنشرش أو بقاله أكتر من أسبوع.</div><div class="row"><button class="btn p" onclick="go('marketing')">افتح خطة النشر</button></div></div>`;
+  if(!S.props.length&&!S.clients.length)h+=`<div class="row"><button class="btn p" onclick="openProp()">+ أول عقار</button><button class="btn p" onclick="openClient()">+ أول عميل</button><button class="btn" onclick="demo()">جرّب ببيانات تجريبية</button></div>`;
+  $('#main').innerHTML=h;
+}
+function demo(){
+  S.props.push({id:uid(),type:'شقة',purpose:'بيع',area:'مدينة نصر',address:'شارع عباس العقاد',size:'140',floor:'الرابع - أسانسير',rooms:'3',baths:'2',finishing:'سوبر لوكس',status:'متاح',price:'2800000',payment:'كاش أو تقسيط',features:'ناصية، قريبة من المترو، تطل على حديقة',papers:'عقد مسجل',added:today()},
+   {id:uid(),type:'محل',purpose:'إيجار',area:'مدينة نصر',address:'شارع مصطفى النحاس',size:'45',front:'6',activity:'صيدلية، مكتب خدمات',finishing:'تشطيب كامل',status:'متاح',price:'18000',payment:'كاش',features:'حركة مشاة عالية',added:today()});
+  S.clients.push({id:uid(),name:'أحمد سمير',phone:'01012345678',purpose:'بيع',type:'شقة',area:'مدينة نصر',min:'2000000',max:'3000000',stage:'جديد',followUp:today(),notes:'عايز دور عالي',added:today()});
+  save();render();toast('اتضافت بيانات تجريبية');
+}
+
+/* ---------- settings ---------- */
+function openSettings(){
+  modal(`<h3>الإعدادات</h3><div class="grid"><div class="f"><label>اسمك أو اسم المكتب</label><input id="s_name" value="${esc(S.settings.name)}"></div>
+   <div class="f"><label>رقمك (بيظهر في الإعلانات)</label><input id="s_phone" type="tel" value="${esc(S.settings.phone)}"></div></div>
+   <div class="row"><button class="btn p" onclick="saveSet()">حفظ</button></div>
+   <h2>نسخة احتياطية</h2>
+   <textarea id="bk" style="min-height:90px" placeholder="الصق هنا النسخة الاحتياطية لاسترجاعها"></textarea>
+   <div class="row"><button class="btn" onclick="$('#bk').value=JSON.stringify(S);copyText('bk')">انسخ بياناتي</button><button class="btn" onclick="restore()">استرجع من النص</button><button class="btn d" onclick="wipe()">مسح كل البيانات</button></div>`);
+}
+function saveSet(){S.settings.name=$('#s_name').value.trim();S.settings.phone=$('#s_phone').value.trim();save();closeM();toast('اتحفظت الإعدادات')}
+function restore(){try{const d=JSON.parse($('#bk').value);if(!d.props||!d.clients)throw 0;S=Object.assign({props:[],clients:[],settings:{name:'',phone:''}},d);save();closeM();render();toast('تم الاسترجاع')}catch(e){toast('النص مش نسخة صحيحة')}}
+function wipe(){confirmBox('تمسح كل العقارات والعملاء؟',()=>{S.props=[];S.clients=[];save();render()})}
+
+/* ---------- shell ---------- */
+const TABS=[['home','الرئيسية'],['props','العقارات'],['clients','العملاء'],['marketing','التسويق']];
+function go(t){tab=t;render()}
+function render(){
+  $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${k===tab?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
+  $('#ttl').textContent=S.settings.name||'Skyline Real Estate';
+  ({home:renderHome,props:renderProps,clients:renderClients,marketing:renderMarketing})[tab]();
+}
+load().then(render);
+</script>
+</body>
+</html>
